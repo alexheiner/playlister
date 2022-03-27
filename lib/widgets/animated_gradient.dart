@@ -26,7 +26,7 @@ class _AnimatedGradientState extends State<AnimatedGradient> {
   Color bottomColor = Color(0xFF20E95D);
   Color topColor = Color(0xFFFA57C1);
   Alignment begin = Alignment.bottomLeft;
-  Alignment end = Alignment.topCenter;
+  Alignment end = Alignment.topRight;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _AnimatedGradientState extends State<AnimatedGradient> {
     });
     return Scaffold(
       body: AnimatedContainer(
-          duration: Duration(seconds: 2),
+          duration: Duration(milliseconds: 1500),
           onEnd: () {
             setState(() {
               index = index + 1;
@@ -46,8 +46,8 @@ class _AnimatedGradientState extends State<AnimatedGradient> {
               topColor = colorList[(index + 1) % colorList.length];
 
               //// animate the alignment
-              // begin = alignmentList[index % alignmentList.length];
-              // end = alignmentList[(index + 2) % alignmentList.length];
+              begin = alignmentList[index % alignmentList.length];
+              end = alignmentList[(index + 2) % alignmentList.length];
             });
           },
           decoration: BoxDecoration(
