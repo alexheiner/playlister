@@ -57,7 +57,7 @@ class Home extends StatelessWidget {
                         top: 112,
                         left: 0,
                         child: Text(
-                          'Transfer',
+                          'TRANSFER',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Color.fromRGBO(51, 51, 51, 1),
@@ -99,7 +99,7 @@ class Home extends StatelessWidget {
                         top: 114,
                         left: 1,
                         child: Text(
-                          'EXPLORE',
+                          'DISCOVER',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Color.fromRGBO(255, 255, 255, 1),
@@ -152,7 +152,7 @@ class Home extends StatelessWidget {
                     Icon(FontAwesomeIcons.user,
                         size: 15, color: Color.fromRGBO(255, 255, 255, 1)),
                     Text(
-                      'Manage',
+                      'MANAGE',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromRGBO(255, 255, 255, 1),
