@@ -1,9 +1,16 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:playlister/provider/spotify_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'config/routes/routes.dart' as router;
 import 'config/routes/routes_config.dart';
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  await dotenv.load(fileName: '.env');
+  runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => SpotifyProvider())],
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,9 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Playlister',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Roboto'),
       onGenerateRoute: router.generageRoutes,
       initialRoute: HomeScreenRoute,
     );
