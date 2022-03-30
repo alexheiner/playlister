@@ -4,9 +4,10 @@ import '../../widgets/buttons/filled_button.dart';
 import '../../widgets/navigation/default_app_bar.dart';
 import '../../widgets/text_input.dart';
 import '../../widgets/buttons/outline_button.dart';
-import '../../widgets/fixed_gradient.dart';
+import '../../widgets/blur_gradient.dart';
+import '../../config/routes/routes_config.dart';
 class Transfer extends StatefulWidget {
-
+//https://open.spotify.com/playlist/37i9dQZF1DX6taq20FeuKj?si=5f1dae22d9a947b4
   Transfer({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class _TransferState extends State<Transfer> {
   }
   @override
   Widget build(BuildContext context) {
-    return FixedGradient(
+    return BlurGradient(
         child: Scaffold( 
           backgroundColor: Colors.transparent,
           appBar: PreferredSize(
@@ -50,16 +51,7 @@ class _TransferState extends State<Transfer> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       OutlineElevatedButton(
-                        callback: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: Text(myController.text),
-                              );
-                            },
-                          );
-                        },
+                        callback: () => Navigator.pushNamed(context, HomeScreenRoute),
                         title: 'Cancel', 
                         size: Size(150.0, 25),
                         fontSize: 22,
@@ -69,14 +61,15 @@ class _TransferState extends State<Transfer> {
                       ),
                       FilledElevatedButton(
                         callback: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: Text(myController.text),
-                              );
-                            },
-                          );
+                          Navigator.pushNamed(context, SpotifyPlaylistViewRoute);
+                          // showDialog(
+                          //   context: context,
+                          //   builder: (context) {
+                          //     return AlertDialog(
+                          //       content: Text(myController.text),
+                          //     );
+                          //   },
+                          // );
                         },
                         title: 'Search', 
                         size: Size(150.0, 25),

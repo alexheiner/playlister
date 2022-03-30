@@ -10,6 +10,7 @@ import 'package:spotify_sdk/spotify_sdk.dart';
 import '../../config/routes/routes_config.dart';
 import '../../provider/spotify_provider.dart';
 import '../../widgets/animated_gradient.dart';
+import '../../widgets/navigation/default_app_bar.dart';
 
 class Manage extends StatefulWidget {
   const Manage({Key? key}) : super(key: key);
@@ -34,13 +35,15 @@ class _ManageState extends State<Manage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text('Accounts'),
-          leading: IconButton(
-              onPressed: () => Navigator.pop(context, 'fromManageScreen'),
-              icon: Icon(Icons.arrow_back))),
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: DefaultAppBar(
+            title: 'Transfer', 
+          ),
+        ),
       body: AnimatedGradient(
-          child: // Figma Flutter Generator ManageWidget - FRAME
+          child: SafeArea(child:// Figma Flutter Generator ManageWidget - FRAME
               Container(
                   width: 390,
                   height: 844,
@@ -159,7 +162,7 @@ class _ManageState extends State<Manage> {
                               ),
                             ))),
                   ]))),
-    );
+    ));
   }
 
   Future<String> getAccessToken(context) async {
