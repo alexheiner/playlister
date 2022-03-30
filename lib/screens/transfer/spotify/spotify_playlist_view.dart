@@ -26,28 +26,38 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
         listItems.add(Container(
           height: 70,
           margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0)), color: Color.fromARGB(255, 83, 83, 83), boxShadow: [
-            BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
+          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0)), color: const Color(0x202020), boxShadow: [
+            BoxShadow(color: Color.fromARGB(255, 0, 0, 0).withAlpha(100), blurRadius: 10.0),
           ]),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
-                      child: Text(
-                      post["name"],
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: ()=> print('pressed'),
+                      icon: Icon(Icons.close),
+                      color: Color.fromARGB(255, 83, 83, 83),
+                      iconSize: 26,
                     ),
-                    
-                    Text(
-                      post["duration"],
-                      style: const TextStyle(fontSize: 17, color: Colors.grey),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                          child: Text(
+                          post["name"],
+                          style: const TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        
+                        Text(
+                          post["duration"],
+                          style: const TextStyle(fontSize: 17, color: Colors.grey),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -94,31 +104,6 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
           child: Column(
             children: [
               //playlist image
-              // AnimatedOpacity(
-              //   duration: const Duration(milliseconds: 2000),
-              //   opacity: closeTopContainer ? 0 : 1,
-              //   child: AnimatedContainer(
-              //     duration: const Duration(milliseconds: 2000),
-              //     width: screenSize.width,
-              //     alignment: Alignment.topCenter,
-              //     height: closeTopContainer ? 0 : playlistImageHeight,
-              //     child: Container(
-              //       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              //       child: FittedBox(
-              //         fit: BoxFit.fill,
-              //         alignment: Alignment.topCenter,
-              //         child: Container(
-              //           width: 150,
-              //           height: categoryHeight,
-              //           decoration: BoxDecoration(
-              //             color: Colors.purple[200],
-              //             borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 300),
                 opacity: closeTopContainer?0:1,
@@ -165,9 +150,8 @@ class CategoriesScroller extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Container(
                 width: 250,
-                margin: EdgeInsets.only(right: 20),
                 height: categoryHeight,
-                decoration: BoxDecoration(color: Colors.orange.shade400, borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                decoration: BoxDecoration(color: Colors.orange.shade400),
                 child: Center(
                   child: Text(
                     'Playlist Image',

@@ -6,6 +6,7 @@ import '../../widgets/text_input.dart';
 import '../../widgets/buttons/outline_button.dart';
 import '../../widgets/blur_gradient.dart';
 import '../../config/routes/routes_config.dart';
+import '../../services/spotify_api.dart';
 class Transfer extends StatefulWidget {
 //https://open.spotify.com/playlist/37i9dQZF1DX6taq20FeuKj?si=5f1dae22d9a947b4
   Transfer({Key? key}) : super(key: key);
@@ -36,9 +37,23 @@ class _TransferState extends State<Transfer> {
         ),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(15.0, 150, 15.0, 0),
+            padding: EdgeInsets.fromLTRB(15.0, 60, 15.0, 0),
             child: Column(
               children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 50),
+                  child: Center(
+                    child: Text(
+                      'Paste the link to your playlist',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30
+                      )
+                    ),
+                  ),
+                ),
+                
                 TextInput(
                   controller: myController,
                   placeholder: 'Playlist Link',
@@ -60,8 +75,9 @@ class _TransferState extends State<Transfer> {
                         backgroundColor: Colors.transparent.withOpacity(0),
                       ),
                       FilledElevatedButton(
-                        callback: () {
-                          Navigator.pushNamed(context, SpotifyPlaylistViewRoute);
+                        callback: () async {
+                          await SpotifyApi.getClientCredentialsToken();
+                          // Navigator.pushNamed(context, SpotifyPlaylistViewRoute);
                           // showDialog(
                           //   context: context,
                           //   builder: (context) {
