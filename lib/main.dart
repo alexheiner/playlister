@@ -2,12 +2,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:playlister/provider/spotify_provider.dart';
 import 'package:provider/provider.dart';
+import './utils/prefs.dart';
 
 import 'config/routes/routes.dart' as router;
 import 'config/routes/routes_config.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
+  WidgetsFlutterBinding.ensureInitialized();
+  await Prefs.init();
   runApp(MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => SpotifyProvider())],
       child: const MyApp()));

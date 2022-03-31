@@ -27,7 +27,8 @@ class APIPath {
       'https://api.spotify.com/v1/playlists/$playlistId';
   
   static String getTracks(String playlistId) =>
-      'https://api.spotify.com/v1/playlists/$playlistId/tracks?fields=items(track(id,name,artists,duration_ms,album(images)))';
+      // 'https://api.spotify.com/v1/playlists/$playlistId/tracks?fields=total,items(track(id,name,artists,duration_ms,album(images)))';
+      'https://api.spotify.com/v1/playlists/$playlistId/tracks';
   
   static String story(String playlistId, String trackId) =>
       'playlists/$playlistId/tracks/$trackId';

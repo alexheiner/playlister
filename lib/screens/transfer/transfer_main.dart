@@ -7,6 +7,7 @@ import '../../widgets/buttons/outline_button.dart';
 import '../../widgets/blur_gradient.dart';
 import '../../config/routes/routes_config.dart';
 import '../../services/spotify_api.dart';
+import '../../models/playlist_tracks.dart';
 class Transfer extends StatefulWidget {
 //https://open.spotify.com/playlist/37i9dQZF1DX6taq20FeuKj?si=5f1dae22d9a947b4
   Transfer({Key? key}) : super(key: key);
@@ -76,7 +77,10 @@ class _TransferState extends State<Transfer> {
                       ),
                       FilledElevatedButton(
                         callback: () async {
-                          await SpotifyApi.getClientCredentialsToken();
+                          PlaylistTracks playlist = await SpotifyApi.getTracks("");
+                          print(playlist.total);
+                          // Playlist playlist = await SpotifyApi.getPlaylist("", spotifyToken);
+                          // print(playlist.name);
                           // Navigator.pushNamed(context, SpotifyPlaylistViewRoute);
                           // showDialog(
                           //   context: context,

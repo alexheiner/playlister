@@ -1,29 +1,22 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
-class User extends Equatable {
+class User {
   final String name;
-  final String avatarImageUrl;
+  final String type;
   final String id;
-  User({required this.id, required this.name, required this.avatarImageUrl});
+  User({required this.id, required this.name, required this.type});
 
   factory User.fromJson(Map<String, dynamic> json) {
     // if (json == null) return null;
     final name = json['display_name'];
-    final avatarImageUrl =
-        json['images'].length != 0 ? json['images'][0]['url'] : null;
+    final type = json['type'];
     final id = json['id'];
-    return User(name: name, avatarImageUrl: avatarImageUrl, id: id);
+    return User(name: name, type: type, id: id);
   }
 
   Map<String, dynamic> toJson() => {
         'display_name': name,
-        'images': [
-          {'url': avatarImageUrl}
-        ],
-        'id': id
+        'id': id,
+        'type': type,
       };
 
-  @override
-  List<Object> get props => [name, avatarImageUrl, id];
 }
