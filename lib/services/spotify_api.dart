@@ -30,7 +30,7 @@ class SpotifyApi {
   static Future<PlaylistTracks> getTracks(String playlistId) async {
     Token token = await getToken();
 
-    playlistId = "2pEkQW3dSQyu1JNepjSNCX";
+    // playlistId = "2pEkQW3dSQyu1JNepjSNCX";
     Uri uri = Uri.parse(APIPath.getTracks(playlistId));
     final response = await http.get(uri, 
       headers: {'Authorization': 'Bearer ' + token.access_token}
@@ -46,6 +46,7 @@ class SpotifyApi {
           'Failed to get a playlist with status code ${response.statusCode}');
     }
   }
+  
   static Future<Token> getClientCredentialsToken() async {
     String clientID = dotenv.env['CLIENT_ID'].toString();
     String secret = dotenv.env['SECRET'].toString();

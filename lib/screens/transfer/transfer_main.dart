@@ -8,6 +8,7 @@ import '../../widgets/blur_gradient.dart';
 import '../../config/routes/routes_config.dart';
 import '../../services/spotify_api.dart';
 import '../../models/playlist_tracks.dart';
+import '../../widgets/playlist/playlist_view.dart';
 class Transfer extends StatefulWidget {
 //https://open.spotify.com/playlist/37i9dQZF1DX6taq20FeuKj?si=5f1dae22d9a947b4
   Transfer({Key? key}) : super(key: key);
@@ -17,12 +18,17 @@ class Transfer extends StatefulWidget {
 }
 
 class _TransferState extends State<Transfer> {
-  final myController = TextEditingController();
+  final inputController = TextEditingController();
 
+  @override
+  void initState() {
+    inputController.text = 'https://open.spotify.com/playlist/2pEkQW3dSQyu1JNepjSNCX?si=d4046e6a2b114f31';
+    super.initState();
+  }
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+    inputController.dispose();
     super.dispose();
   }
   @override
@@ -56,7 +62,7 @@ class _TransferState extends State<Transfer> {
                 ),
                 
                 TextInput(
-                  controller: myController,
+                  controller: inputController,
                   placeholder: 'Playlist Link',
                   icon: Icons.search,
                   autoFocus: true,
@@ -77,19 +83,11 @@ class _TransferState extends State<Transfer> {
                       ),
                       FilledElevatedButton(
                         callback: () async {
-                          PlaylistTracks playlist = await SpotifyApi.getTracks("");
-                          print(playlist.total);
-                          // Playlist playlist = await SpotifyApi.getPlaylist("", spotifyToken);
-                          // print(playlist.name);
-                          // Navigator.pushNamed(context, SpotifyPlaylistViewRoute);
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) {
-                          //     return AlertDialog(
-                          //       content: Text(myController.text),
-                          //     );
-                          //   },
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PlaylistView(playlistLink: inputController.text))
+                          );
+
                         },
                         title: 'Search', 
                         size: Size(150.0, 25),
