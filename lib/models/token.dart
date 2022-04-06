@@ -1,6 +1,4 @@
-import 'dart:math';
 
-import 'package:flutter/material.dart';
 
 class Token {
   final int expires_in;
@@ -17,6 +15,23 @@ class Token {
     DateTime time = exp.add(Duration(minutes: expires_in));
     return Token(access_token, token_type, expires_in, time);
   }
+
+  static Token? tryFromJson(dynamic json){
+    try {
+      return Token.fromJson(json);
+    } catch (_) {
+      return null;
+    }
+  }
+
+
+  Map<String, dynamic> toJson() => {
+    'expires_in': expires_in,
+    'token_type': token_type,
+    'access_token': access_token,
+    // 'expires_at': expires_at,
+  };
+
 
   bool isExpired() {
     return DateTime.now().isBefore(this.expires_at);

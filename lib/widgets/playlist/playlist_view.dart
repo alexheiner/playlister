@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utils/utils.dart';
 import './applemusic_playlist_view.dart';
-import './spotify_playlist_view.dart';
+import 'spotify/spotify_playlist_view.dart';
 
 class PlaylistView extends StatefulWidget {
   final String playlistLink;

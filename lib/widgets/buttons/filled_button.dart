@@ -5,6 +5,8 @@ class FilledElevatedButton  extends StatelessWidget {
   final Size size;
   final double fontSize;
   final Color backgroundColor;
+  final IconData? icon;
+  final double? iconSize;
   const FilledElevatedButton (
     {
       required this.callback,
@@ -12,6 +14,8 @@ class FilledElevatedButton  extends StatelessWidget {
       required this.size,
       required this.fontSize,
       required this.backgroundColor,
+      this.icon,
+      this.iconSize,
       Key? key
     }) : super(key: key);
 
@@ -30,13 +34,23 @@ class FilledElevatedButton  extends StatelessWidget {
         backgroundColor: MaterialStateProperty.all<Color>(backgroundColor),
       ),
       onPressed: callback,
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: fontSize,
+      child: Row(
+        mainAxisAlignment: (icon != null) ? MainAxisAlignment.start : MainAxisAlignment.center,
+        children: [
+          if(icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Icon(icon, size: iconSize),
+            ),
+          Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: fontSize,
+              ),
+            ),
           ),
-        ),
+        ],
       )
     );
   }

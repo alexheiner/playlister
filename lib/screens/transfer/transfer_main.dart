@@ -6,11 +6,8 @@ import '../../widgets/text_input.dart';
 import '../../widgets/buttons/outline_button.dart';
 import '../../widgets/blur_gradient.dart';
 import '../../config/routes/routes_config.dart';
-import '../../services/spotify_api.dart';
-import '../../models/playlist_tracks.dart';
 import '../../widgets/playlist/playlist_view.dart';
 class Transfer extends StatefulWidget {
-//https://open.spotify.com/playlist/37i9dQZF1DX6taq20FeuKj?si=5f1dae22d9a947b4
   Transfer({Key? key}) : super(key: key);
 
   @override
@@ -22,7 +19,8 @@ class _TransferState extends State<Transfer> {
 
   @override
   void initState() {
-    inputController.text = 'https://open.spotify.com/playlist/2pEkQW3dSQyu1JNepjSNCX?si=d4046e6a2b114f31';
+    // inputController.text = 'https://open.spotify.com/playlist/2pEkQW3dSQyu1JNepjSNCX?si=d4046e6a2b114f31';
+    inputController.text = 'https://open.spotify.com/playlist/37i9dQZF1DX0kbJZpiYdZl?si=04aab415fea145ec';
     super.initState();
   }
   @override

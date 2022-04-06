@@ -4,19 +4,24 @@ class Track{
   Track({
     required this.name,
     required this.id,
+    required this.uri,
     required this.artists,
     required this.albumImageUrl,
     required this.durationMs,
+    required this.explicit,
   });
   final String name;
   final String id;
+  final String uri;
   final List<Artist> artists;
   final String albumImageUrl;
   final int durationMs;
+  final bool explicit;
 
   factory Track.fromJson(Map<String, dynamic> json) {
     final name = json['name'];
     final id = json['id'];
+    final uri = json['uri'];
     final List<Artist> artists = (json['artists'] as List)
         .map((artist) => Artist.fromJson(artist))
         .toList();
@@ -25,12 +30,16 @@ class Track{
         ? images[1]['url']
         : images.length > 0 ? images[0]['url'] : null;
     final durationMs = json['duration_ms'];
+    final explicit = json['explicit'];
     return Track(
         name: name,
         id: id,
+        uri: uri,
         artists: artists,
         albumImageUrl: albumImageUrl,
-        durationMs: durationMs);
+        durationMs: durationMs,
+        explicit: explicit,
+        );
   }
 
 }

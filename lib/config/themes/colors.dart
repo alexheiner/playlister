@@ -8,4 +8,5 @@ const DarkBody = const Color(0x191414);
 
 const TextColor = const Color(0xEEEEEE);
 
+const SpotifyGreen = const Color(0x1DB954);
 
