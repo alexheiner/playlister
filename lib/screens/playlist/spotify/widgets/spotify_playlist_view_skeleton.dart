@@ -3,8 +3,8 @@ import 'package:shimmer/shimmer.dart';
 
 Shimmer getShimmerContent(Size screenSize, double playlistImageHeight){
     return Shimmer.fromColors(
-      baseColor: Color.fromARGB(255, 67, 67, 67),
-      highlightColor: Color.fromARGB(255, 82, 82, 82),
+      baseColor: Color.fromARGB(255, 34, 34, 34),
+      highlightColor: Color.fromARGB(255, 49, 49, 49),
       child: Container(
       height: screenSize.height,
       child: Column(

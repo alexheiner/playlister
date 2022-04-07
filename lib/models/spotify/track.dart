@@ -22,13 +22,16 @@ class Track{
     final name = json['name'];
     final id = json['id'];
     final uri = json['uri'];
+
     final List<Artist> artists = (json['artists'] as List)
         .map((artist) => Artist.fromJson(artist))
         .toList();
+        
     final images = json['album']['images'];
     final albumImageUrl = images.length > 1
         ? images[1]['url']
         : images.length > 0 ? images[0]['url'] : null;
+
     final durationMs = json['duration_ms'];
     final explicit = json['explicit'];
     return Track(

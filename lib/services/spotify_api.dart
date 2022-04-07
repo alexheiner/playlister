@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import './api_path.dart';
-import '../models/playlist.dart';
-import '../models/token.dart';
+import '../models/spotify/playlist.dart';
+import '../models/spotify/token.dart';
 
 class SpotifyApi {
 

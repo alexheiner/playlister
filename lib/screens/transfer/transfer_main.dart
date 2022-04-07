@@ -6,7 +6,7 @@ import '../../widgets/text_input.dart';
 import '../../widgets/buttons/outline_button.dart';
 import '../../widgets/blur_gradient.dart';
 import '../../config/routes/routes_config.dart';
-import '../../widgets/playlist/playlist_view.dart';
+import '../playlist/playlist_view.dart';
 class Transfer extends StatefulWidget {
   Transfer({Key? key}) : super(key: key);
 

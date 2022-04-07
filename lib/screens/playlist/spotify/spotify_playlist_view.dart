@@ -4,7 +4,7 @@ import 'widgets/spotify_playlist_view_skeleton.dart';
 import './widgets/spotify_playlist_view_skeleton.dart';
 import './widgets/playlist_list_view.dart';
 import 'spotify_utils.dart';
-import '../../../models/playlist.dart';
+import '../../../models/spotify/playlist.dart';
 import 'dart:ui';
 
 class SpotifyPlaylistView extends StatefulWidget {

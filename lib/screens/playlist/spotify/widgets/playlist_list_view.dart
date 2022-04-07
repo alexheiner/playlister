@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../spotify_utils.dart';
 import './playlist_cover_photo.dart';
-import '../../../../models/playlist.dart';
-import '../../../buttons/filled_button.dart';
+import '../../../../models/spotify/playlist.dart';
+import '../../../../models/spotify/track.dart';
+import '../../../../widgets/buttons/filled_button.dart';
 
 class PlaylistView extends StatefulWidget {
   final Playlist playlist;
@@ -19,9 +20,9 @@ class PlaylistView extends StatefulWidget {
   State<PlaylistView> createState() => _PlaylistViewState();
 }
 
-
 class _PlaylistViewState extends State<PlaylistView> {
   late Playlist _playlist;
+  late List<Track> _tracks;
   late Function _callback;
   late Function _setName;
   ScrollController controller = ScrollController();
@@ -33,6 +34,9 @@ class _PlaylistViewState extends State<PlaylistView> {
     _playlist = widget.playlist;
     _callback = widget.callback;
     _setName = widget.setName;
+    setState(() {
+      _tracks = _playlist.tracks;
+    });
     controller.addListener(() {
       double value = controller.offset/119;
       setState(() {
@@ -40,6 +44,12 @@ class _PlaylistViewState extends State<PlaylistView> {
         closeTopContainer = controller.offset > 1;
       });
     _setName(_playlist.name);
+    });
+  }
+
+  void _removeTrack(String uri){
+    setState(() {
+      _tracks.removeWhere((element) => element.uri == uri);
     });
   }
 
@@ -70,7 +80,7 @@ class _PlaylistViewState extends State<PlaylistView> {
             child: ListView.builder(
               shrinkWrap: true,
               controller: controller,
-              itemCount: widget.playlist.tracks.length + 1,
+              itemCount: _tracks.length + 1,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 if(index == 0){
@@ -147,7 +157,7 @@ class _PlaylistViewState extends State<PlaylistView> {
                 }
                 else {
                   // return widget.playlistContent.tracks[index - 1];
-                  return utils.getTrackWidget(widget.playlist.tracks[index - 1]);
+                  return utils.getTrackWidget(_tracks[index - 1], _removeTrack);
                 }
               },
             ),
@@ -157,3 +167,4 @@ class _PlaylistViewState extends State<PlaylistView> {
     );
   }
 }
+
