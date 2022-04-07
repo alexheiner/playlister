@@ -20,7 +20,7 @@ class _TransferState extends State<Transfer> {
   @override
   void initState() {
     // inputController.text = 'https://open.spotify.com/playlist/2pEkQW3dSQyu1JNepjSNCX?si=d4046e6a2b114f31';
-    inputController.text = 'https://open.spotify.com/playlist/37i9dQZF1DX0kbJZpiYdZl?si=04aab415fea145ec';
+    // inputController.text = 'https://open.spotify.com/playlist/37i9dQZF1DX0kbJZpiYdZl?si=04aab415fea145ec';
     super.initState();
   }
   @override
@@ -47,16 +47,16 @@ class _TransferState extends State<Transfer> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: 50),
-                  child: Center(
-                    child: Text(
-                      'Paste the link to your playlist',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30
-                      )
-                    ),
-                  ),
+                  // child: Center(
+                  //   child: Text(
+                  //     'Paste the link to your playlist',
+                  //     textAlign: TextAlign.center,
+                  //     style: TextStyle(
+                  //       color: Colors.white,
+                  //       fontSize: 30
+                  //     )
+                  //   ),
+                  // ),
                 ),
                 
                 TextInput(

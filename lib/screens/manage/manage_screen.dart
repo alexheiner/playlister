@@ -45,12 +45,9 @@ class _ManageState extends State<Manage> {
       body: AnimatedGradient(
           child: SafeArea(child:// Figma Flutter Generator ManageWidget - FRAME
               Container(
-                  width: 390,
-                  height: 844,
-                  child: Stack(children: <Widget>[
+                  child: Stack(alignment: Alignment.center,children: <Widget>[
                     Positioned(
                         top: 100,
-                        left: 100,
                         child: Text(
                           'Link your accounts',
                           textAlign: TextAlign.left,
@@ -64,7 +61,6 @@ class _ManageState extends State<Manage> {
                         )),
                     Positioned(
                         top: 200,
-                        left: 100,
                         width: 175,
                         child: GestureDetector(
                             onTap: () async {
@@ -116,7 +112,6 @@ class _ManageState extends State<Manage> {
                             ))),
                     Positioned(
                         top: 275,
-                        left: 100,
                         width: 175,
                         child: GestureDetector(
                             onTap: () {
