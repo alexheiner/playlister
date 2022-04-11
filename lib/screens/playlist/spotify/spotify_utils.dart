@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-    import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 import '../../../services/spotify_api.dart';
 import '../../../models/spotify/playlist.dart';

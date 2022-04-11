@@ -1,9 +1,4 @@
 
-enum Platform {
-  AppleMusic,
-  Spotify
-}
-
 Map<String, String> parsePlaylistLink(String link) {
   String id = "";
   String platform = "";
@@ -16,6 +11,9 @@ Map<String, String> parsePlaylistLink(String link) {
     id = 'apple';
     platform = "AppleMusic";
     print('apple');
+  }
+  else {
+    throw Exception();
   }
   Map<String, String> playlistInfo = {
     "id": id,
