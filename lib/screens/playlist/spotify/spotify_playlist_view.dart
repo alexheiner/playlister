@@ -26,13 +26,13 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
     _playlist = utils.getPlaylist(widget.playlistId);
   }
 
-  void _setColorNav(){
+  void _setColorNav() {
     setState(() {
       colorNav = !colorNav;
     });
   }
 
-  void _setPlaylistName(String name){
+  void _setPlaylistName(String name) {
     setState(() {
       playlistName = name;
     });
@@ -41,22 +41,23 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    final double playlistImageHeight = screenSize.height*0.30;
+    final double playlistImageHeight = screenSize.height * 0.30;
     return SafeArea(
       child: Scaffold(
         backgroundColor: DarkBody,
         body: Stack(
           children: [
-            FutureBuilder < Playlist > (
+            FutureBuilder<Playlist>(
               future: _playlist,
               builder: (context, AsyncSnapshot snapshot) {
-                if(snapshot.connectionState == ConnectionState.waiting){
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return getShimmerContent(screenSize, playlistImageHeight);
-                }
-                else if(snapshot.connectionState == ConnectionState.done) {
-                  return PlaylistView(playlist: snapshot.data, callback: _setColorNav, setName: _setPlaylistName);
-                }
-                else {
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  return PlaylistView(
+                      playlist: snapshot.data,
+                      callback: _setColorNav,
+                      setName: _setPlaylistName);
+                } else {
                   return Text('No data');
                 }
               },
@@ -71,22 +72,32 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
                   alignment: Alignment.centerLeft,
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                      sigmaX: colorNav?  3.0 : 0,
-                      sigmaY: colorNav?  3.0 : 0,
+                      sigmaX: colorNav ? 3.0 : 0,
+                      sigmaY: colorNav ? 3.0 : 0,
                     ),
                     child: Stack(
                       alignment: Alignment.centerLeft,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back_ios_new, size: 18, color: Colors.white,),
-                          onPressed: ()=> Navigator.pop(context),
+                          icon: Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => Navigator.pop(context),
                         ),
-                        if(colorNav)
-                          Center(child: Text(playlistName, style: TextStyle(color: Colors.white, fontSize: 18),)),
+                        if (colorNav)
+                          Center(
+                              child: Text(
+                            playlistName,
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          )),
                       ],
                     ),
                   ),
-                  color: colorNav ? Color.fromARGB(193, 20, 20, 20) : Colors.transparent,
+                  color: colorNav
+                      ? Color.fromARGB(193, 20, 20, 20)
+                      : Colors.transparent,
                 ),
               ),
             )
@@ -96,9 +107,3 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
     );
   }
 }
-
-
-
-
-
-

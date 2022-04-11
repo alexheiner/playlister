@@ -23,10 +23,11 @@ class _PlaylistViewState extends State<PlaylistView> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return platform == "Spotify" ? 
-      SpotifyPlaylistView(playlistId: playlistId) :
-      AppleMusicPlaylistView(playlistId: playlistId);
+    return platform == "Spotify"
+        ? SpotifyPlaylistView(playlistId: playlistId)
+        : AppleMusicPlaylistView(playlistId: playlistId);
   }
 }

@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:playlister/provider/spotify_provider.dart';
@@ -9,6 +13,10 @@ import 'config/routes/routes_config.dart';
 void main() async {
   await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
+  };
   runApp(MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => SpotifyProvider())],
       child: const MyApp()));

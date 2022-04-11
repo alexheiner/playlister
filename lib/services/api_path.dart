@@ -15,38 +15,44 @@ class APIPath {
 
   static String requestToken = 'https://accounts.spotify.com/api/token';
 
+  static String addSongsToPlaylist(String playlistId) =>
+      'https://api.spotify.com/v1/playlists/$playlistId/tracks';
+
+  static String createPlaylist(String userId) =>
+      'https://api.spotify.com/v1/users/$userId/playlists';
+
   static String getCurrentUser = 'https://api.spotify.com/v1/me';
 
   static String getUserById(String userId) =>
       'https://api.spotify.com/v1/users/$userId';
-  
+
   static String getListOfPlaylists(int offset, int limit) =>
       'https://api.spotify.com/v1/me/playlists?limit=$limit&offset=$offset';
-  
+
   static String getPlaylist(String playlistId) =>
       'https://api.spotify.com/v1/playlists/$playlistId?limit=20';
-  
+
   static String getTracks(String playlistId) =>
       // 'https://api.spotify.com/v1/playlists/$playlistId/tracks?fields=total,items(track(id,name,artists,duration_ms,album(images)))';
       'https://api.spotify.com/v1/playlists/$playlistId/tracks';
-  
+
   static String story(String playlistId, String trackId) =>
       'playlists/$playlistId/tracks/$trackId';
-  
+
   static String playlists = 'playlists';
-  
+
   static String playlist(String playlistId) => 'playlists/$playlistId';
-  
+
   static String savedPlaylist(
           {@required String? userId, @required String? playlistId}) =>
       'users/$userId/saved_playlists/$playlistId';
-  
+
   static String savedPlaylists({@required String? userId}) =>
       'users/$userId/saved_playlists';
-  
+
   static String play = 'https://api.spotify.com/v1/me/player/play';
-  
+
   static String pause = 'https://api.spotify.com/v1/me/player/pause';
-  
+
   static String player = 'https://api.spotify.com/v1/me/player';
 }

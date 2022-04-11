@@ -7,6 +7,7 @@ import '../../widgets/buttons/outline_button.dart';
 import '../../widgets/blur_gradient.dart';
 import '../../config/routes/routes_config.dart';
 import '../playlist/playlist_view.dart';
+
 class Transfer extends StatefulWidget {
   Transfer({Key? key}) : super(key: key);
 
@@ -23,21 +24,23 @@ class _TransferState extends State<Transfer> {
     // inputController.text = 'https://open.spotify.com/playlist/37i9dQZF1DX0kbJZpiYdZl?si=04aab415fea145ec';
     super.initState();
   }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     inputController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlurGradient(
-        child: Scaffold( 
-          backgroundColor: Colors.transparent,
-          appBar: PreferredSize(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: DefaultAppBar(
-            title: 'Transfer', 
+            title: 'Transfer',
           ),
         ),
         body: Center(
@@ -58,7 +61,6 @@ class _TransferState extends State<Transfer> {
                   //   ),
                   // ),
                 ),
-                
                 TextInput(
                   controller: inputController,
                   placeholder: 'Playlist Link',
@@ -71,8 +73,9 @@ class _TransferState extends State<Transfer> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       OutlineElevatedButton(
-                        callback: () => Navigator.pushNamed(context, HomeScreenRoute),
-                        title: 'Cancel', 
+                        callback: () =>
+                            Navigator.pushNamed(context, HomeScreenRoute),
+                        title: 'Cancel',
                         size: Size(150.0, 25),
                         fontSize: 22,
                         fontColor: Colors.white,
@@ -80,18 +83,17 @@ class _TransferState extends State<Transfer> {
                         backgroundColor: Colors.transparent.withOpacity(0),
                       ),
                       FilledElevatedButton(
-                        callback: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => PlaylistView(playlistLink: inputController.text))
-                          );
-
-                        },
-                        title: 'Search', 
-                        size: Size(150.0, 25),
-                        fontSize: 20,
-                        backgroundColor: OpaqueGray
-                      ),
+                          callback: () async {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PlaylistView(
+                                        playlistLink: inputController.text)));
+                          },
+                          title: 'Search',
+                          size: Size(150.0, 25),
+                          fontSize: 20,
+                          backgroundColor: OpaqueGray),
                     ],
                   ),
                 )

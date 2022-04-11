@@ -1,18 +1,19 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:spotify_sdk/spotify_sdk.dart';
 import './api_path.dart';
 import '../models/spotify/playlist.dart';
 import '../models/spotify/token.dart';
 
 class SpotifyApi {
-
   static Future<Playlist> getPlaylist(String playlistId) async {
     Token token = await getClientCredentialsToken();
     Uri uri = Uri.parse(APIPath.getPlaylist(playlistId));
-    final response = await http.get(uri, 
-      headers: {'Authorization': 'Bearer ' + token.access_token}
-    );
+    final response = await http
+        .get(uri, headers: {'Authorization': 'Bearer ' + token.access_token});
 
     if (response.statusCode == 200) {
       final responseBody = json.decode(response.body);
@@ -23,19 +24,75 @@ class SpotifyApi {
           'Failed to get a playlist with status code ${response.statusCode}');
     }
   }
-  
+
+  static Future<String> createAndFillPlaylist(
+      String playlistName, List<String> songUris, String userId) async {
+    // Make playlist
+    Uri createUri = Uri.parse(APIPath.createPlaylist(userId));
+    String userToken = await getUserAccessToken();
+
+    Response createPlaylistRes = await http.post(createUri,
+        headers: {'Authorization': 'Bearer ' + userToken},
+        body: json.encode({"name": playlistName}));
+
+    if (createPlaylistRes.statusCode != 201) {
+      throw Exception(
+          'Failed to create a playlist with status code ${createPlaylistRes.statusCode}. Message: ${createPlaylistRes.body}');
+    }
+
+    // Add songs to newly created playlist
+    final createPlaylistBody = json.decode(createPlaylistRes.body);
+    final String playlistId = createPlaylistBody["id"];
+
+    Uri addSongsUri = Uri.parse(APIPath.addSongsToPlaylist(playlistId));
+    final addSongsPostBody = json.encode({"uris": songUris});
+
+    final addSongsRes = await http.post(addSongsUri,
+        headers: {'Authorization': 'Bearer ' + userToken},
+        body: addSongsPostBody);
+
+    if (addSongsRes.statusCode != 201) {
+      throw Exception(
+          'Failed to add songs to a playlist with status code ${addSongsRes.statusCode}. Message: ${addSongsRes.body}');
+    }
+    final addSongsResBody = json.decode(addSongsRes.body);
+
+    // Return the snapshot ID of the updated playlist
+    return addSongsResBody["snapshot_id"];
+  }
+
+  static Future<String> getUserAccessToken() async {
+    try {
+      var authenticationToken = await SpotifySdk.getAuthenticationToken(
+          clientId: dotenv.env['CLIENT_ID'].toString(),
+          redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
+          scope: 'app-remote-control, '
+              'user-modify-playback-state, '
+              'playlist-read-private, '
+              'playlist-modify-public,user-read-currently-playing');
+      return authenticationToken;
+    } on PlatformException catch (e) {
+      print("${e.code}, message: ${e.message}");
+      return Future.error('$e.code: $e.message');
+    } on MissingPluginException {
+      print('not implemented');
+      return Future.error('not implemented');
+    }
+  }
+
   static Future<Token> getClientCredentialsToken() async {
     String clientID = dotenv.env['CLIENT_ID'].toString();
     String secret = dotenv.env['SECRET'].toString();
     String credentials = clientID + ":" + secret;
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
-    String encoded = stringToBase64.encode(credentials);  
+    String encoded = stringToBase64.encode(credentials);
     print(encoded);
-    final response = await http.post(Uri.parse(APIPath.requestToken), 
-    headers: {'Authorization': 'Basic ' + encoded},
-    body: {"grant_type": "client_credentials"}
-
-    );
+    final response = await http.post(Uri.parse(APIPath.requestToken), headers: {
+      'Authorization': 'Basic ' + encoded
+    }, body: {
+      "grant_type": "client_credentials",
+      "scopes": "playlist-modify-public,playlist-modify-private"
+    });
 
     if (response.statusCode == 200) {
       final responseBody = json.decode(response.body);
