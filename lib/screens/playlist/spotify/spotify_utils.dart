@@ -25,7 +25,6 @@ class SpotifyUtils {
 
   Future<String> createAndFillPlaylist(
       String playlistName, List<String> songUris, String userId) async {
-    print("creating playlist and filling...");
     String res =
         await SpotifyApi.createAndFillPlaylist(playlistName, songUris, userId);
     return res;

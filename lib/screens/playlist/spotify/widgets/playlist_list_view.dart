@@ -54,7 +54,6 @@ class _PlaylistViewState extends State<PlaylistView> {
 
   void _export() async {
     final List<String> ids = _tracks.map((t) => t.uri).toList();
-    print(ids.toString());
 
     try {
       final res =
