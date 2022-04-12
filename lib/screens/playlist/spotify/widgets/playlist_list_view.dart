@@ -7,6 +7,7 @@ import './playlist_cover_photo.dart';
 import '../../../../models/spotify/playlist.dart';
 import '../../../../models/spotify/track.dart';
 import '../../../../widgets/buttons/filled_button.dart';
+import '../../../../services/applemusic/ios_channel.dart';
 
 class PlaylistView extends StatefulWidget {
   final Playlist playlist;
@@ -31,6 +32,7 @@ class _PlaylistViewState extends State<PlaylistView> {
   late Function _setName;
   ScrollController controller = ScrollController();
   SpotifyUtils utils = new SpotifyUtils();
+  IosChannel iosChannel = IosChannel();
   bool closeTopContainer = false;
   double topContainer = 0;
   @override
@@ -52,7 +54,7 @@ class _PlaylistViewState extends State<PlaylistView> {
     });
   }
 
-  void _export() async {
+  void _exportToSpotify() async {
     final List<String> ids = _tracks.map((t) => t.uri).toList();
 
     try {
@@ -75,6 +77,10 @@ class _PlaylistViewState extends State<PlaylistView> {
     setState(() {
       _tracks.removeWhere((element) => element.uri == uri);
     });
+  }
+
+  void _exportToAppleMusic() async {
+    await iosChannel.exportPlaylistFromSpotify(_playlist.name, _tracks);
   }
 
   @override
@@ -156,7 +162,7 @@ class _PlaylistViewState extends State<PlaylistView> {
                               ],
                             ),
                             FilledElevatedButton(
-                              callback: () => _export(),
+                              callback: () => _exportToAppleMusic,
                               title: 'Export',
                               size: Size(95, 25),
                               icon: Icons.import_export,

@@ -12,22 +12,31 @@ class PlaylistView extends StatefulWidget {
 }
 
 class _PlaylistViewState extends State<PlaylistView> {
-  late String playlistId;
-  late String platform;
+  late String playlistId = "";
+  late String platform = "";
+  late String errorMsg = "";
   @override
   void initState() {
-    Map<String, String> playlistInfo = parsePlaylistLink(widget.playlistLink);
-    setState(() {
-      playlistId = playlistInfo['id'].toString();
-      platform = playlistInfo['platform'].toString();
-    });
+    try {
+      Map<String, String> playlistInfo = parsePlaylistLink(widget.playlistLink);
+      setState(() {
+        playlistId = playlistInfo['id'].toString();
+        platform = playlistInfo['platform'].toString();
+      });
+    } on Exception catch (_) {
+      setState(() {
+        errorMsg = "Invalid playlist Link";
+      });
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return platform == "Spotify"
-        ? SpotifyPlaylistView(playlistId: playlistId)
-        : AppleMusicPlaylistView(playlistId: playlistId);
+    if (platform == "Spotify")
+      return SpotifyPlaylistView(playlistId: playlistId);
+    if (platform == "AppleMusic")
+      return AppleMusicPlaylistView(playlistId: playlistId);
+    return Text(errorMsg);
   }
 }

@@ -5,7 +5,7 @@ import './widgets/spotify_playlist_view_skeleton.dart';
 import './widgets/playlist_list_view.dart';
 import 'spotify_utils.dart';
 import '../../../models/spotify/playlist.dart';
-import 'dart:ui';
+import '../widgets/playlist_back_arrow.dart';
 
 class SpotifyPlaylistView extends StatefulWidget {
   final String playlistId;
@@ -62,45 +62,7 @@ class _SpotifyPlaylistViewState extends State<SpotifyPlaylistView> {
                 }
               },
             ),
-            Positioned(
-              left: 0.0,
-              top: 0.0,
-              child: ClipRect(
-                child: Container(
-                  height: 50,
-                  width: screenSize.width,
-                  alignment: Alignment.centerLeft,
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: colorNav ? 3.0 : 0,
-                      sigmaY: colorNav ? 3.0 : 0,
-                    ),
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios_new,
-                            size: 18,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        if (colorNav)
-                          Center(
-                              child: Text(
-                            playlistName,
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          )),
-                      ],
-                    ),
-                  ),
-                  color: colorNav
-                      ? Color.fromARGB(193, 20, 20, 20)
-                      : Colors.transparent,
-                ),
-              ),
-            )
+            PlaylistBackArrow(shouldClose: colorNav, playlistName: playlistName)
           ],
         ),
       ),

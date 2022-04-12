@@ -45,4 +45,17 @@ class Track{
         );
   }
 
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['id'] = id;
+    _data['id'] = id ;
+    _data['uri'] = uri ;
+    _data['artists'] = artists.map((artist) => artist.toJson()).toList();
+    _data['albumImageUrl'] = albumImageUrl;
+    _data['durationMs'] = durationMs;
+    _data['explicit'] = explicit;
+    return _data;
+  }
+
 }
