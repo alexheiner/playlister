@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:playlister/models/spotify/track.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
+import '../models/applemusic/playlist.dart' as Apple;
 import './api_path.dart';
 import '../models/spotify/playlist.dart';
 import '../models/spotify/token.dart';
@@ -25,11 +27,54 @@ class SpotifyApi {
     }
   }
 
+  static Future<List<Track>> findSongByNameAndArtist(
+      List<Apple.Track> tracks) async {
+    List<Track> tracks = [];
+    Iterable<String> uris = tracks.map((t) {
+      return 'https://api.spotify.com/v1/search?q=name:${t.attributes.name}%20artist:${t.attributes.artistName}&type=track&limit=1';
+    });
+
+    Token token = await getClientCredentialsToken();
+
+    uris.forEach((u) async {
+      Uri uri = Uri.parse(u);
+      final res = await http
+          .get(uri, headers: {'Authorization': 'Bearer ' + token.access_token});
+
+      if (res.statusCode != 200) {
+        throw Exception(
+            'Failed to fetch user data with status code ${res.statusCode}, uri: $u, Message: ${res.body}');
+      }
+
+      final userInfoBody = json.decode(res.body);
+      final Track? track = Track.fromJson(userInfoBody["tracks"]["items"][0]);
+
+      if (track != null) tracks.add(track);
+    });
+
+    return tracks;
+  }
+
   static Future<String> createAndFillPlaylist(
-      String playlistName, List<String> songUris, String userId) async {
+      String playlistName, List<String> songUris) async {
+    // access token
+    String userToken = await getUserAccessToken();
+
+    // get user info
+    Uri userInfoUri = Uri.parse(APIPath.getCurrentUser);
+    Response userInfoRes = await http
+        .post(userInfoUri, headers: {'Authorization': 'Bearer ' + userToken});
+
+    if (userInfoRes.statusCode != 200) {
+      throw Exception(
+          'Failed to fetch user data with status code ${userInfoRes.statusCode}. Message: ${userInfoRes.body}');
+    }
+
+    final userInfoBody = json.decode(userInfoRes.body);
+    final String userId = userInfoBody["id"];
+
     // Make playlist
     Uri createUri = Uri.parse(APIPath.createPlaylist(userId));
-    String userToken = await getUserAccessToken();
 
     Response createPlaylistRes = await http.post(createUri,
         headers: {'Authorization': 'Bearer ' + userToken},

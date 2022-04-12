@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../models/applemusic/playlist.dart';
 import '../widgets/playlist_cover_photo.dart';
 import './playlist_track.dart';
+
 class PlaylistView extends StatefulWidget {
   final Playlist playlist;
   PlaylistView({required this.playlist, Key? key}) : super(key: key);
@@ -15,8 +16,7 @@ class _PlaylistViewState extends State<PlaylistView> {
   late List<Track> _tracks;
   ScrollController controller = ScrollController();
 
-
-@override
+  @override
   void initState() {
     super.initState();
     _playlist = widget.playlist;
@@ -25,7 +25,7 @@ class _PlaylistViewState extends State<PlaylistView> {
     });
   }
 
-  void _removeTrack(String id){
+  void _removeTrack(String id) {
     setState(() {
       _tracks.removeWhere((track) => track.id == id);
     });
@@ -37,23 +37,23 @@ class _PlaylistViewState extends State<PlaylistView> {
       children: [
         Expanded(
           child: ListView.builder(
-            shrinkWrap: true,
-            controller: controller,
-            itemCount: _tracks.length + 1,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              if(index == 0){
-                return PlaylistCoverPhoto(playlistImageUrl: _playlist.attributes.artwork.url,
-                  playlistOwner: _playlist.attributes.curatorName,
-                  playlistname: _playlist.attributes.name,
-                  tracks: _tracks,
-                );
-              }
-              else{
-              return PlaylistTrack(track: _tracks[index - 1], callback: _removeTrack);
-              }
-            }
-          ),
+              shrinkWrap: true,
+              controller: controller,
+              itemCount: _tracks.length + 1,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return PlaylistCoverPhoto(
+                    playlistImageUrl: _playlist.attributes.artwork.url,
+                    playlistOwner: _playlist.attributes.curatorName,
+                    playlistName: _playlist.attributes.name,
+                    tracks: _tracks,
+                  );
+                } else {
+                  return PlaylistTrack(
+                      track: _tracks[index - 1], callback: _removeTrack);
+                }
+              }),
         ),
       ],
     );

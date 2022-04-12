@@ -3,24 +3,44 @@ import 'package:flutter/cupertino.dart';
 import '../../../../config/themes/colors.dart';
 import '../../../../models/applemusic/playlist.dart';
 import '../../../../services/applemusic/ios_channel.dart';
-
+import '../../../transfer/success_view.dart';
+import '../../spotify/spotify_utils.dart';
 
 class PlaylistCoverPhoto extends StatelessWidget {
   final String playlistImageUrl;
-  final String playlistname;
+  final String playlistName;
   final String playlistOwner;
   final List<Track> tracks;
   IosChannel iosChannel = new IosChannel();
+  SpotifyUtils spotifyUtils = new SpotifyUtils();
 
   PlaylistCoverPhoto(
-    {required this.playlistImageUrl,
-    required this.playlistname,
-    required this.playlistOwner,
-    required this.tracks});
-    
+      {required this.playlistImageUrl,
+      required this.playlistName,
+      required this.playlistOwner,
+      required this.tracks});
+
+  void _exportToSpotify(context) async {
+    try {
+      final spotifyTracks = await spotifyUtils.findSongByNameAndArtist(tracks);
+
+      final List<String> ids = spotifyTracks.map((t) => t.uri).toList();
+
+      final res = await spotifyUtils.createAndFillPlaylist(playlistName, ids);
+
+      if (res != "") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SuccessView(playlistName: playlistName)));
+      }
+    } catch (e) {
+      print("Error! $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Padding(
@@ -34,20 +54,18 @@ class PlaylistCoverPhoto extends StatelessWidget {
                 fit: BoxFit.fill,
                 alignment: Alignment.topCenter,
                 child: Container(
-                  width: 300,
-                  height: 300,
-                  decoration: BoxDecoration(color: Colors.transparent),
-                  child: ClipRRect(
-                    
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      playlistImageUrl,
-                      height: 300,
-                      width: 300,
-                    ),
-                  )
-                  ),
-                ),
+                    width: 300,
+                    height: 300,
+                    decoration: BoxDecoration(color: Colors.transparent),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        playlistImageUrl,
+                        height: 300,
+                        width: 300,
+                      ),
+                    )),
+              ),
             ),
           ),
         ),
@@ -55,24 +73,34 @@ class PlaylistCoverPhoto extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: Text(playlistname, style: TextStyle(color: Colors.white, fontSize: 18),),
+              child: Text(
+                playlistName,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
-            Text(playlistOwner, style: TextStyle(color: AppleMusicPrimary, fontSize: 18)),
+            Text(playlistOwner,
+                style: TextStyle(color: AppleMusicPrimary, fontSize: 18)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
               child: Row(
-                
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CupertinoButton(
-                    child: Text('Cancel', style: TextStyle(color: AppleMusicPrimary),),
-                    onPressed: ()=> print('export'),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: AppleMusicPrimary),
+                    ),
+                    onPressed: () => _exportToSpotify(context),
                     color: Color(0xff1a1a1c),
                   ),
                   CupertinoButton(
-                    child: Text('Export', style: TextStyle(color: AppleMusicPrimary),),
+                    child: Text(
+                      'Export',
+                      style: TextStyle(color: AppleMusicPrimary),
+                    ),
                     onPressed: () async {
-                      bool success = await iosChannel.exportPlaylistFromApple(playlistname, tracks);
+                      bool success = await iosChannel.exportPlaylistFromApple(
+                          playlistName, tracks);
                       print("Success: ${success}");
                     },
                     color: Color(0xff1a1a1c),
@@ -80,7 +108,6 @@ class PlaylistCoverPhoto extends StatelessWidget {
                 ],
               ),
             ),
-
           ],
         )
       ],

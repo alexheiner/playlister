@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../../provider/spotify_provider.dart';
-import '../../../transfer/success_view.dart';
 import '../spotify_utils.dart';
 import './playlist_cover_photo.dart';
 import '../../../../models/spotify/playlist.dart';
@@ -52,25 +49,6 @@ class _PlaylistViewState extends State<PlaylistView> {
       });
       _setName(_playlist.name);
     });
-  }
-
-  void _exportToSpotify() async {
-    final List<String> ids = _tracks.map((t) => t.uri).toList();
-
-    try {
-      final res =
-          utils.createAndFillPlaylist(_playlist.name, ids, _playlist.owner.id);
-
-      if (res != "") {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SuccessView(playlistName: _playlist.name)));
-      }
-    } catch (e) {
-      print("Error! $e");
-    }
   }
 
   void _removeTrack(String uri) {

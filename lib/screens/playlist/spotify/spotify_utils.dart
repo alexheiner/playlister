@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:playlister/models/applemusic/playlist.dart' as Apple;
 
 import '../../../services/spotify_api.dart';
 import '../../../models/spotify/playlist.dart';
@@ -23,10 +24,14 @@ class SpotifyUtils {
     return playlist;
   }
 
+  Future<List<Track>> findSongByNameAndArtist(List<Apple.Track> tracks) async {
+    List<Track> res = await SpotifyApi.findSongByNameAndArtist(tracks);
+    return res;
+  }
+
   Future<String> createAndFillPlaylist(
-      String playlistName, List<String> songUris, String userId) async {
-    String res =
-        await SpotifyApi.createAndFillPlaylist(playlistName, songUris, userId);
+      String playlistName, List<String> songUris) async {
+    String res = await SpotifyApi.createAndFillPlaylist(playlistName, songUris);
     return res;
   }
 
