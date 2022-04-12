@@ -9,4 +9,11 @@ class Artist {
     return Artist(name: name, href: href);
   }
 
+    Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['href'] = href;
+    return _data;
+  }
+
 }

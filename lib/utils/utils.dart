@@ -8,9 +8,12 @@ Map<String, String> parsePlaylistLink(String link) {
     platform = "Spotify";
   }
   else if(link.contains('apple')) {
-    id = 'apple';
+    List<String> splitLink = link.split('/');
+    id = splitLink.last;
+    if(id.substring(0,2) != "pl"){
+      throw Exception();
+    }
     platform = "AppleMusic";
-    print('apple');
   }
   else {
     throw Exception();

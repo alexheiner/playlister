@@ -3,7 +3,7 @@ import 'dart:async';
 import '../../../models/applemusic/playlist.dart';
 import '../../../config/themes/colors.dart';
 import '../widgets/playlist_back_arrow.dart';
-import './apple_music_utils.dart';
+import '../../../services/applemusic/ios_channel.dart';
 import '../widgets/playlist_shimmer_loading.dart';
 import './widgets/playlist_list_view.dart';
 class AppleMusicPlaylistView extends StatefulWidget {
@@ -17,12 +17,12 @@ class AppleMusicPlaylistView extends StatefulWidget {
 class _AppleMusicPlaylistViewState extends State<AppleMusicPlaylistView> {
   late Future<Playlist> _playlist;
   String playlistName = '';
-  AppleMusicUtils utils = new AppleMusicUtils();
+  IosChannel iosChannel = new IosChannel();
 
   @override
   void initState() {
     super.initState();
-    _playlist = utils.getPlaylist(widget.playlistId);
+    _playlist = iosChannel.getPlaylist(widget.playlistId);
   }
 
 
@@ -43,7 +43,7 @@ class _AppleMusicPlaylistViewState extends State<AppleMusicPlaylistView> {
                 }
                 else if(snapshot.connectionState == ConnectionState.done) {
                   // return PlaylistView(playlist: snapshot.data, callback: _setColorNav, setName: _setPlaylistName);
-                  return PlaylistView();
+                  return PlaylistView(playlist: snapshot.data);
                 }
                 else if(snapshot.hasError){
                   return Text('Error getting playlist data');
@@ -53,7 +53,11 @@ class _AppleMusicPlaylistViewState extends State<AppleMusicPlaylistView> {
                 }
               },
             ),
-            PlaylistBackArrow(shouldClose: false, playlistName: playlistName)
+            PlaylistBackArrow(
+              shouldClose: false,
+              playlistName: playlistName,
+              iconColor: AppleMusicPrimary
+            )
           ],
         ),
       ),

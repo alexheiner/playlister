@@ -3,8 +3,9 @@ import 'dart:ui';
 
 class PlaylistBackArrow extends StatelessWidget {
   late bool shouldClose = false;
+  final Color? iconColor;
   final playlistName;
-  PlaylistBackArrow({required this.shouldClose, required this.playlistName, Key? key}) : super(key: key);
+  PlaylistBackArrow({required this.shouldClose, required this.playlistName, this.iconColor, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,11 @@ class PlaylistBackArrow extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back_ios_new, size: 18, color: Colors.white,),
+                          icon: Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 18,
+                            color: iconColor != null ? iconColor : Colors.white,
+                          ),
                           onPressed: ()=> Navigator.pop(context),
                         ),
                         if(shouldClose)

@@ -87,7 +87,10 @@ class Artwork {
   Artwork.fromJson(Map<String, dynamic> json){
     width = json['width'];
     height = json['height'];
-    url = json['url'];
+    String tmpUrl = json['url'];
+    tmpUrl = tmpUrl.replaceAll(RegExp(r'{w}'), '500');
+    tmpUrl = tmpUrl.replaceAll(RegExp(r'{h}'), '500');
+    url = tmpUrl;
   }
 
   Map<String, dynamic> toJson() {
@@ -194,7 +197,7 @@ class TrackAttributes {
     hasLyrics = json['hasLyrics'];
     albumName = json['albumName'];
     trackNumber = json['trackNumber'];
-    composerName = json['composerName'];
+    composerName = json.containsKey('composerName') ? json['composerName'] : "";
     contentRating = json.containsKey('contentRating') ? json['contentRating'] : "";
   }
 
