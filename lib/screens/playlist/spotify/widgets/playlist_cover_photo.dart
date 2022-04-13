@@ -15,13 +15,13 @@ class PlaylistCoverPhoto extends StatelessWidget {
           fit: BoxFit.fill,
           alignment: Alignment.topCenter,
           child: Container(
-            width: 300,
-            height: 300,
-            decoration: BoxDecoration(color: Colors.white),
+            width: 350,
+            height: 350,
+            decoration: BoxDecoration(color: Colors.transparent),
             child: Image.network(
               playlistImageUrl,
-              height: 300,
-              width: 300,
+              height: 350,
+              width: 350,
             )
             ),
           ),

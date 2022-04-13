@@ -5,6 +5,8 @@ import '../../../../models/spotify/playlist.dart';
 import '../../../../models/spotify/track.dart';
 import '../../../../widgets/buttons/filled_button.dart';
 import '../../../../services/applemusic/ios_channel.dart';
+import '../../../transfer/success_view.dart';
+import '../../../../widgets/export_loading_modal.dart';
 
 class PlaylistView extends StatefulWidget {
   final Playlist playlist;
@@ -57,14 +59,27 @@ class _PlaylistViewState extends State<PlaylistView> {
     });
   }
 
-  void _exportToAppleMusic() async {
-    await iosChannel.exportPlaylistFromSpotify(_playlist.name, _tracks);
+  void _exportToAppleMusic(context) async {
+    try {
+      Navigator.of(context).push(ExportLoadingModal(playlistName: _playlist.name, exportToPlatform: "Apple Music"));
+      bool success = await iosChannel.exportPlaylistFromSpotify(_playlist.name, _tracks);
+
+      Navigator.of(context).pop();
+
+      if(success){
+        Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SuccessView(playlistName: _playlist.name, playlistUrl: "music://music.apple.com/library",)));
+      }
+    } on Exception catch (e) {
+      print("Error! $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    final double playlistImageHeight = screenSize.height * 0.30;
     SpotifyUtils utils = new SpotifyUtils();
     return Container(
       height: screenSize.height,
@@ -79,7 +94,7 @@ class _PlaylistViewState extends State<PlaylistView> {
                 duration: const Duration(milliseconds: 300),
                 width: screenSize.width,
                 alignment: Alignment.topCenter,
-                height: closeTopContainer ? 0 : playlistImageHeight,
+                height: closeTopContainer ? 0 : 320,
                 child: PlaylistCoverPhoto(
                     playlistImageUrl: _playlist.playlistImageUrl)),
           ),
@@ -93,12 +108,12 @@ class _PlaylistViewState extends State<PlaylistView> {
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.only(bottom: 0),
                           child: Text(
                             _playlist.name,
                             style: TextStyle(
@@ -108,13 +123,14 @@ class _PlaylistViewState extends State<PlaylistView> {
                                 letterSpacing: 0.7),
                           ),
                         ),
-                        Text(
-                          _playlist.description,
-                          maxLines: 1,
-                          softWrap: false,
-                          overflow: TextOverflow.fade,
-                          style: TextStyle(color: Colors.grey, fontSize: 13),
-                        ),
+                        if(_playlist.description != "")
+                          Text(
+                            _playlist.description,
+                            maxLines: 1,
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(color: Colors.grey, fontSize: 13),
+                          ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,7 +156,7 @@ class _PlaylistViewState extends State<PlaylistView> {
                               ],
                             ),
                             FilledElevatedButton(
-                              callback: () => _exportToAppleMusic,
+                              callback: ()=> _exportToAppleMusic(context),
                               title: 'Export',
                               size: Size(95, 25),
                               icon: Icons.import_export,

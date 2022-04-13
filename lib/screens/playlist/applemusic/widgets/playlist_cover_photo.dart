@@ -5,6 +5,7 @@ import '../../../../models/applemusic/playlist.dart';
 import '../../../../services/applemusic/ios_channel.dart';
 import '../../../transfer/success_view.dart';
 import '../../spotify/spotify_utils.dart';
+import '../../../../widgets/export_loading_modal.dart';
 
 class PlaylistCoverPhoto extends StatelessWidget {
   final String playlistImageUrl;
@@ -22,17 +23,20 @@ class PlaylistCoverPhoto extends StatelessWidget {
 
   void _exportToSpotify(context) async {
     try {
+      Navigator.of(context).push(ExportLoadingModal(playlistName: playlistName, exportToPlatform: "Spotify"));
       final spotifyTracks = await spotifyUtils.findSongByNameAndArtist(tracks);
 
       final List<String> ids = spotifyTracks.map((t) => t.uri).toList();
 
-      final res = await spotifyUtils.createAndFillPlaylist(playlistName, ids);
+      final playlistUrl = await spotifyUtils.createAndFillPlaylist(playlistName, ids);
 
-      if (res != "") {
+      Navigator.of(context).pop();
+
+      if (playlistUrl != "") {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SuccessView(playlistName: playlistName)));
+                builder: (context) => SuccessView(playlistName: playlistName, playlistUrl: playlistUrl,)));
       }
     } catch (e) {
       print("Error! $e");
@@ -90,7 +94,7 @@ class PlaylistCoverPhoto extends StatelessWidget {
                       'Cancel',
                       style: TextStyle(color: AppleMusicPrimary),
                     ),
-                    onPressed: () => _exportToSpotify(context),
+                    onPressed: () => Navigator.pop(context),
                     color: Color(0xff1a1a1c),
                   ),
                   CupertinoButton(
@@ -98,11 +102,7 @@ class PlaylistCoverPhoto extends StatelessWidget {
                       'Export',
                       style: TextStyle(color: AppleMusicPrimary),
                     ),
-                    onPressed: () async {
-                      bool success = await iosChannel.exportPlaylistFromApple(
-                          playlistName, tracks);
-                      print("Success: ${success}");
-                    },
+                    onPressed: () => _exportToSpotify(context),
                     color: Color(0xff1a1a1c),
                   ),
                 ],

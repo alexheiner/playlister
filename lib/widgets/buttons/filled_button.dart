@@ -35,7 +35,8 @@ class FilledElevatedButton  extends StatelessWidget {
       ),
       onPressed: callback,
       child: Row(
-        mainAxisAlignment: (icon != null) ? MainAxisAlignment.start : MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if(icon != null)
             Padding(

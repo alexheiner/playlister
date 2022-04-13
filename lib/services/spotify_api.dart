@@ -19,7 +19,6 @@ class SpotifyApi {
 
     if (response.statusCode == 200) {
       final responseBody = json.decode(response.body);
-      print(responseBody);
       return Playlist.fromJson(responseBody);
     } else {
       throw Exception(
@@ -29,14 +28,22 @@ class SpotifyApi {
 
   static Future<List<Track>> findSongByNameAndArtist(
       List<Apple.Track> tracks) async {
-    List<Track> tracks = [];
-    Iterable<String> uris = tracks.map((t) {
-      return 'https://api.spotify.com/v1/search?q=name:${t.attributes.name}%20artist:${t.attributes.artistName}&type=track&limit=1';
+    List<Track> spotifyTracks = [];
+    List<String> uris = [];
+    
+    tracks.forEach((t) {
+      String name = t.attributes.name;
+      int ind = name.indexOf("(");
+      if(ind != -1){
+        name = name.substring(0, ind);
+      }
+      String s = 'https://api.spotify.com/v1/search?q=track:${name} artist:${t.attributes.artistName}&type=track&market=US&limit=1';
+      uris.add(s);
     });
 
     Token token = await getClientCredentialsToken();
 
-    uris.forEach((u) async {
+    for(String u in uris) {
       Uri uri = Uri.parse(u);
       final res = await http
           .get(uri, headers: {'Authorization': 'Bearer ' + token.access_token});
@@ -49,11 +56,12 @@ class SpotifyApi {
       final userInfoBody = json.decode(res.body);
       final Track? track = Track.fromJson(userInfoBody["tracks"]["items"][0]);
 
-      if (track != null) tracks.add(track);
-    });
-
-    return tracks;
+      if (track != null) spotifyTracks.add(track);
+    }
+    return spotifyTracks;
   }
+
+
 
   static Future<String> createAndFillPlaylist(
       String playlistName, List<String> songUris) async {
@@ -63,7 +71,7 @@ class SpotifyApi {
     // get user info
     Uri userInfoUri = Uri.parse(APIPath.getCurrentUser);
     Response userInfoRes = await http
-        .post(userInfoUri, headers: {'Authorization': 'Bearer ' + userToken});
+        .get(userInfoUri, headers: {'Authorization': 'Bearer ' + userToken});
 
     if (userInfoRes.statusCode != 200) {
       throw Exception(
@@ -87,6 +95,8 @@ class SpotifyApi {
 
     // Add songs to newly created playlist
     final createPlaylistBody = json.decode(createPlaylistRes.body);
+
+    final String playlistUrl = createPlaylistBody["external_urls"]['spotify'];
     final String playlistId = createPlaylistBody["id"];
 
     Uri addSongsUri = Uri.parse(APIPath.addSongsToPlaylist(playlistId));
@@ -100,10 +110,11 @@ class SpotifyApi {
       throw Exception(
           'Failed to add songs to a playlist with status code ${addSongsRes.statusCode}. Message: ${addSongsRes.body}');
     }
-    final addSongsResBody = json.decode(addSongsRes.body);
+    // final addSongsResBody = json.decode(addSongsRes.body);
 
     // Return the snapshot ID of the updated playlist
-    return addSongsResBody["snapshot_id"];
+    // return addSongsResBody["snapshot_id"];
+    return playlistUrl;
   }
 
   static Future<String> getUserAccessToken() async {

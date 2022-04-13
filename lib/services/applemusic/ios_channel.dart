@@ -35,14 +35,15 @@ class IosChannel {
     }
     
   }
-  Future<void> exportPlaylistFromSpotify(String name, List<Spotify.Track> tracks) async {
+  Future<bool> exportPlaylistFromSpotify(String name, List<Spotify.Track> tracks) async {
     try{
       var send = <String, dynamic> {"name": name, "tracks": json.encode(tracks)};
-      var res = await platform.invokeMapMethod<String, dynamic>('exportPlaylistFromSpotify', send);
-      if(res != null){
-        AppleMusicExportResult result = AppleMusicExportResult.fromJson(res);
-        print(result.message);
+      var res = await platform.invokeMethod('exportPlaylistFromSpotify', send);
+      if(res == "success"){
+        print("success");
+        return true;
       }
+      return false;
 
     } on PlatformException catch(e) {
       print('!!error!! ' + e.message.toString());

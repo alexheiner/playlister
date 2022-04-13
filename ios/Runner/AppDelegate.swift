@@ -162,7 +162,7 @@ struct ExportResult: Codable{
                         songs.append(track)
                     }
                     
-                    let requestBody = LibraryPlaylistRequest(name: "Final test 5", description: nil, tracks: songs)
+                    let requestBody = LibraryPlaylistRequest(name: name, description: nil, tracks: songs)
                     let _ = try await addPlaylistToLibrary( requestBody: requestBody)
 
                     result("success")
@@ -194,9 +194,17 @@ struct ExportResult: Codable{
                         let artists = value["artists"] as! [Dictionary<String,Any>]
                         let artist = artists[0]["name"] as! String
                         
-                        // encode strings
-                        let trackNameEnc = trackName.replacingOccurrences(of: " ", with: "+")
+                        var trackNameFormat = trackName;
+                        if let i = trackName.firstIndex(of: "("){
+//                            let tr = String(trackName.prefix(i)) ?? ""
+                            trackNameFormat = String(trackName[..<i])
+                        }
+                        
+                            // encode strings
+                        let trackNameEnc = trackNameFormat.replacingOccurrences(of: " ", with: "+")
                         let artistEnc = artist.replacingOccurrences(of: " ", with: "+")
+                        
+                        
                         
                         print("trackNameEnc: \(trackNameEnc)")
                         print("artistEnc: \(artistEnc)")
@@ -210,19 +218,19 @@ struct ExportResult: Codable{
                             print(retSong)
                             songs.append(LibraryPlaylistRequestTrack(id: retSong.id.rawValue, type: "songs"))
                             
-                            let requestBody = LibraryPlaylistRequest(name: name, description: nil, tracks: songs)
                             
-                            let _ = try await addPlaylistToLibrary( requestBody: requestBody)
-//                            let responseStr = String(data: response.data, encoding: .utf8)!
-//                            result(ExportResult(data: responseStr, success: true, message: "Successfully exported playlist"))
-                            result("success")
 
                         } catch {
                             print(error)
-//                            result(ExportResult(data: "", success: false, message: "Error exporting playlist: \(error.localizedDescription)"))
+
                             result("fail")
                         }
                     }
+                    let requestBody = LibraryPlaylistRequest(name: name, description: nil, tracks: songs)
+                    
+                    let _ = try await addPlaylistToLibrary( requestBody: requestBody)
+
+                    result("success")
                 } else {
                     print("bad json")
                     result("fail")

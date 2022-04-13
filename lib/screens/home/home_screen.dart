@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/animated_gradient.dart';
 import '/config/routes/routes_config.dart';
@@ -25,6 +26,18 @@ class Home extends StatelessWidget {
                       width: 150,
                       height: 150,
                       child: Stack(children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () async {
+                            final spotifyUrl =
+                                'https://open.spotify.com/playlist/1uHhXlL99Pvg0xQH6Ul7gX';
+
+                            // Check if Spotify is installed
+                            if (await canLaunch(spotifyUrl)) {
+                              // Launch the url which will open Spotify
+                              launch(spotifyUrl);
+                            }
+                          },
+                        child: Text('Press')),
                         Positioned(
                             top: 0,
                             left: 0,
